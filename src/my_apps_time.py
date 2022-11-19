@@ -1,7 +1,7 @@
 import requests
 
 class MyAppsTime:
-	def __init__(self):
+	def __init__(self) -> None:
 		self.api = "https://apiv2.myappstime.com/api"
 		self.headers = {
 			"user-agent": "okhttp/4.9.0"
@@ -9,7 +9,7 @@ class MyAppsTime:
 		self.token = None
 		self.user_id = None
 
-	def login(self, email: str, password: str):
+	def login(self, email: str, password: str) -> dict:
 		data = {
 			"mail": email,
 			"password": password
@@ -20,7 +20,7 @@ class MyAppsTime:
 			headers=self.headers).json()
 
 
-	def login_with_google(self, token: str):
+	def login_with_google(self, token: str) -> dict:
 		data = {
 			"token": token
 		}
@@ -34,14 +34,14 @@ class MyAppsTime:
 			self.user_id = self.get_current_user()["data"]["userId"]
 		return response
 
-	def get_current_user(self):
+	def get_current_user(self) -> dict:
 		return requests.get(
 			f"{self.api}/v2/users/profile",
 			headers=self.headers).json()
 
-	def add_apps_time(self, apps: list, times: list):
+	def add_apps_time(self, apps: list, times: list) -> dict:
 		data = {"appTime": []}
-		for app, time in zip(apps, times):
+		for app, time in zip(apps, times) -> dict:
 			data["appTime"].append(
 				{
 					"packageName": app,
@@ -53,22 +53,22 @@ class MyAppsTime:
 			json=data,
 			headers=self.headers).json()
 
-	def get_apps_settings(self):
+	def get_apps_settings(self) -> dict:
 		return requests.get(
 			f"{self.api}/v2/my/apps/settings",
 			headers=self.headers).json()
 
-	def get_posts(self, limit: int = 20):
+	def get_posts(self, limit: int = 20) -> dict:
 		return requests.get(
 			f"{self.api}/v2/post/live?limit={limit}",
 			headers=self.headers).json()
 
-	def get_user_info(self, user_id: str):
+	def get_user_info(self, user_id: str) -> dict:
 		return requests.get(
 			f"{self.api}/v2/users/userById?userId={user_id}",
 			headers=self.headers).json()
 
-	def get_user_apps_time(self, user_id: str):
+	def get_user_apps_time(self, user_id: str) -> dict:
 		return requests.get(
 			f"{self.api}/v2/apps/time/wk?userId={user_id}",
 			headers=self.headers).json()
@@ -77,7 +77,7 @@ class MyAppsTime:
 			self,
 			user_id: str,
 			offset: int = 0,
-			limit: int = 20):
+			limit: int = 20) -> dict:
 		return requests.get(
 			f"{self.api}/v2/friendships/user/followers?userId={user_id}&offset={offset}&limit={limit}",
 			headers=self.headers).json()
@@ -87,7 +87,7 @@ class MyAppsTime:
 			self,
 			user_id: str,
 			offset: int = 0,
-			limit: int = 20):
+			limit: int = 20) -> dict:
 		return requests.get(
 			f"{self.api}/v2/friendships/user/subscriptions?userId={user_id}&offset={offset}&limit={limit}",
 			headers=self.headers).json()
@@ -96,7 +96,7 @@ class MyAppsTime:
 			self,
 			query: str,
 			offset: int = 0,
-			limit: int = 20):
+			limit: int = 20) -> dict:
 		return requests.get(
 			f"{self.api}/v2/users/allUsers?displayName={query}&offset={offset}&limit={limit}",
 			headers=self.headers).json()
@@ -105,7 +105,7 @@ class MyAppsTime:
 			self,
 			display_name: str = None,
 			about: str = None,
-			avatar_url: str = None):
+			avatar_url: str = None) -> dict:
 		data = {}
 		if display_name:
 			data["displayName"] = display_name
@@ -122,7 +122,7 @@ class MyAppsTime:
 			self,
 			body: str,
 			image: str = None,
-			package_name: str = None):
+			package_name: str = None) -> dict:
 		data = {
 			"body": body
 		}
@@ -135,14 +135,7 @@ class MyAppsTime:
 			json=data,
 			headers=self.headers).json()
 
-	def delete_post(self, post_id: str):
+	def delete_post(self, post_id: str) -> dict:
 		return requests.delete(
 			f"{self.api}/v2/post/drop?postId={post_id}",
-			headers=self.headers).json()
-
-	def update_stats(self):
-		data = {"mail": "1"}
-		return requests.post(
-			f"{self.api}/v2/users/profile",
-			json=data,
 			headers=self.headers).json()
