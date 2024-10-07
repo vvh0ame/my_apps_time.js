@@ -19,7 +19,7 @@ class MyAppsTime {
 		return response.json()
 	}
 
-	async login_with_google(token) {
+	async loginWithGoogleToken(token) {
 		const response = await fetch(
 			`${this.api}/v2/oauth/google/redirect`, {
 				method: "POST",
